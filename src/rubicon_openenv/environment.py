@@ -2,11 +2,8 @@ import random
 
 class FraudEnvironment:
     def __init__(self):
-        self.task = "easy"
-        self.step_count = 0
         self.max_steps = 10
-        self.cost = 0.0
-        self.scenario = {}
+        self.reset("easy")  
         
     def reset(self, task: str = "easy"):
         self.task = task
@@ -37,6 +34,7 @@ class FraudEnvironment:
             "observation": f"New case assigned. {self.scenario['desc']} Available actions: 'investigate', 'freeze_account', 'approve_transaction'."
         }
 
+    # ... keep your step() and state() functions exactly the same ...
     def step(self, action_type: str, target: str = ""):
         self.step_count += 1
         done = False
