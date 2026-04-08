@@ -1,24 +1,56 @@
-import gradio as gr
+import threading
+import time
 import requests
 
-BASE = "http://localhost:7860"
+from fastapi import FastAPI
+import uvicorn
+import gradio as gr
+
+# ------------------------
+# FASTAPI BACKEND
+# ------------------------
+
+api = FastAPI()
+
+@api.get("/health")
+def health():
+    return {"status": "healthy"}
+
+@api.post("/step")
+def step():
+    return {
+        "decision": "wait",
+        "cost": 3,
+        "confidence": 0.62,
+        "wrong_path_steps": 5
+    }
+
+def run_api():
+    uvicorn.run(api, host="0.0.0.0", port=8000)
+
+# Start backend in background thread
+threading.Thread(target=run_api, daemon=True).start()
+
+# Give server time to start
+time.sleep(2)
+
+# ------------------------
+# GRADIO UI
+# ------------------------
+
+BASE = "http://localhost:8000"
 
 def check_health():
     try:
-        res = requests.get(f"{BASE}/health")
-        return res.json()
-    except:
-        return "Backend not reachable"
+        return requests.get(f"{BASE}/health").json()
+    except Exception as e:
+        return str(e)
 
 def run_step():
     try:
-        res = requests.post(
-            f"{BASE}/step",
-            json={"action_type": "inspect_headers", "task": "easy"}
-        )
-        return res.json()
-    except:
-        return "Error running step"
+        return requests.post(f"{BASE}/step").json()
+    except Exception as e:
+        return str(e)
 
 with gr.Blocks() as demo:
     gr.Markdown("# ⚖️ Rubicon")
@@ -33,4 +65,4 @@ with gr.Blocks() as demo:
     btn1.click(check_health, outputs=out1)
     btn2.click(run_step, outputs=out2)
 
-demo.launch()
+demo.launch(server_name="0.0.0.0", server_port=7860)
