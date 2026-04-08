@@ -40,5 +40,5 @@ But one spends significantly longer in incorrect reasoning states.
 
 This difference is invisible to standard accuracy-based evaluation.
 
-Rubicon is designed to capture it.c
+Rubicon is designed to capture it.
 
