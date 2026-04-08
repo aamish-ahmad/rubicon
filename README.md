@@ -42,3 +42,17 @@ This difference is invisible to standard accuracy-based evaluation.
 
 Rubicon is designed to capture it.
 
+## How It Works
+
+An agent interacts with a partially observable environment.
+
+At each step, it can:
+- gather information (investigation actions)
+- commit to a decision (irreversible)
+
+The agent must balance:
+- uncertainty (incomplete information)
+- time cost (waiting too long is expensive)
+- risk (committing too early can be wrong)
+
+Once a decision is made, the episode ends.
