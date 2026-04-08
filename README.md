@@ -56,3 +56,21 @@ The agent must balance:
 - risk (committing too early can be wrong)
 
 Once a decision is made, the episode ends.
+
+## Usage
+
+Run locally:
+
+```bash
+git clone https://github.com/aamish-ahmad/rubicon.git
+cd rubicon
+pip install fastapi uvicorn pydantic openai
+python server/app.py## Usage
+
+Run locally:
+
+```bash
+git clone https://github.com/aamish-ahmad/rubicon.git
+cd rubicon
+pip install fastapi uvicorn pydantic openai
+python server/app.py
