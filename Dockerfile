@@ -1,0 +1,9 @@
+FROM python:3.11-slim
+RUN useradd -m -u 1000 user
+USER user
+ENV PATH="/home/user/.local/bin:$PATH"
+WORKDIR /app
+COPY --chown=user . /app
+RUN pip install --no-cache-dir fastapi uvicorn pydantic openai
+EXPOSE 7860
+CMD ["python", "server/app.py"]
