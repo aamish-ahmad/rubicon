@@ -34,16 +34,23 @@ class RubiconEnvironment:
         self.task = task
         self.reset()
 
+    # def reset(self):
+    #     self.step_count = 0
+    #     self.action_history = []
+    #     self.committed = False
+    #     self.ground_truth = TASKS[self.task]["ground_truth"]
+    #     self.signals = TASKS[self.task]["signals"].copy()
+    #     self.belief = {"phishing_attack": 0.33, "malware_execution": 0.33, "false_positive": 0.34}
+    #     self.wrong_path_steps = 0
+    #     self.max_steps = 10
+    #     return self._get_obs()
     def reset(self):
-        self.step_count = 0
-        self.action_history = []
-        self.committed = False
-        self.ground_truth = TASKS[self.task]["ground_truth"]
-        self.signals = TASKS[self.task]["signals"].copy()
-        self.belief = {"phishing_attack": 0.33, "malware_execution": 0.33, "false_positive": 0.34}
-        self.wrong_path_steps = 0
-        self.max_steps = 10
-        return self._get_obs()
+    self.current_step = 0
+    self.done = False
+    
+    # default task (already set in init)
+    obs = self._get_observation()
+    return obs
 
     def _entropy(self):
         return -sum(p * math.log(p + 1e-9) for p in self.belief.values())
