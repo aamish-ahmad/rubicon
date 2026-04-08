@@ -48,19 +48,30 @@ def check_health():
 
 def run_step():
     try:
-        return requests.post(f"{BASE}/step").json()
+        res = requests.post(f"{BASE}/step").json()
+        res["interpretation"] = (
+            "Agent chose to WAIT → gathering more info before committing."
+        )
+        return res
     except Exception as e:
         return str(e)
 
 with gr.Blocks() as demo:
     gr.Markdown("# ⚖️ Rubicon")
-    gr.Markdown("Evaluate when an agent decides — not just what it decides.")
+    gr.Markdown("### When should an agent act vs wait?")
 
-    btn1 = gr.Button("Check Health")
-    out1 = gr.JSON()
+    gr.Markdown(
+        "Rubicon evaluates decision timing — not just accuracy.\n\n"
+        "- Acting too early → wrong decision\n"
+        "- Waiting too long → unnecessary cost\n"
+    )
 
-    btn2 = gr.Button("Run Step")
-    out2 = gr.JSON()
+    with gr.Row():
+        btn1 = gr.Button("Check System Health")
+        btn2 = gr.Button("Simulate Decision Step")
+
+    out1 = gr.JSON(label="System Status")
+    out2 = gr.JSON(label="Agent Decision Output")
 
     btn1.click(check_health, outputs=out1)
     btn2.click(run_step, outputs=out2)
