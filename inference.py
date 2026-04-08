@@ -55,9 +55,16 @@ def run_task(task_name):
     for step in range(1, MAX_STEPS + 1):
         action = get_action(obs, task_name)
         obs, reward, done, info = env.step(action)
-        rewards.append(reward.value)
+        
+        raw_reward = reward.value
+        # Normalize reward to [0, 1] range for better interpretability
+        
+        norm_reward = max(0.0, min(1.0, (raw_reward + 1.0) / 2.0))
+        
+        rewards.append(norm_reward)
+
         error = info.get("error") or "null"
-        print(f"[STEP] step={step} action={action} reward={reward.value:.2f} done={str(done).lower()} error={error}")
+        print(f"[STEP] step={step} action={action} reward={norm_reward:.2f} done={str(done).lower()} error={error}")
         if done:
             break
 
