@@ -24,20 +24,21 @@ Two agents can have the same accuracy — but very different real-world impact.
 
 Rubicon makes this visible.
 
-## Show Don't Tell
+## Behavioral Difference
 
-Tested across episodes. Both agents achieve similar accuracy.
+Example behavior difference between two agents:
 
 | | Agent A | Agent B |
 |---|---|---|
-| Accuracy | 80% | 80% |
-| wrong_path_steps | 4.2 | 0.8 |
+| Accuracy | similar | similar |
+| wrong_path_steps | high | low |
 | accumulated_cost | high | low |
-| Hard task score | 0.31 | 0.91 |
 
-Same accuracy. Different behavior. Different cost.
+Both agents may reach similar final answers.
 
-Standard benchmarks cannot distinguish them.  
-Rubicon can.
+But one spends significantly longer in incorrect reasoning states.
 
+This difference is invisible to standard accuracy-based evaluation.
+
+Rubicon is designed to capture it.c
 
