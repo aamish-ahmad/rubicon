@@ -14,12 +14,22 @@ api = FastAPI()
 
 @api.get("/health")
 def health():
-    return {"status": "healthy"}
-
+    import time
+    return {
+        "status": "healthy",
+        "timestamp": time.time(),
+        "service": "rubicon-backend",
+        "uptime_hint": "running"
+    }
+    time.sleep(random.uniform(0.1, 0.5))
 import random
+import time
 
 @api.post("/step")
 def step():
+    
+    time.sleep(random.uniform(0.1, 0.5))
+
     decision = random.choice(["wait", "commit"])
     
     cost = random.randint(1, 10)
@@ -49,9 +59,20 @@ BASE = "http://localhost:8000"
 
 def check_health():
     try:
-        return requests.get(f"{BASE}/health").json()
+        res = requests.get(f"{BASE}/health", timeout=2)
+
+        if res.status_code == 200:
+            data = res.json()
+            data["verification"] = "Backend reachable and responding"
+            return data
+        else:
+            return {"status": "error", "detail": "Bad response"}
+
     except Exception as e:
-        return str(e)
+        return {
+            "status": "down",
+            "error": str(e)
+        }
 
 def run_step():
     try:
