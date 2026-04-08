@@ -1,12 +1,8 @@
----
-title: Rubicon
-emoji: 🔴
-colorFrom: red
-colorTo: red
-sdk: docker
-pinned: false
----
-
 # Rubicon
 
-RL environment for irreversible decision-making under uncertainty.
+When should an agent stop gathering information and act?
+
+Act too early → irreversible mistake  
+Wait too long → cost already incurred  
+
+Rubicon measures this.
