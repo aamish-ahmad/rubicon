@@ -6,7 +6,7 @@ from rubicon_openenv.environment import RubiconEnvironment
 
 API_BASE_URL = os.getenv("API_BASE_URL", "https://router.huggingface.co/v1")
 MODEL_NAME = os.getenv("MODEL_NAME", "Qwen/Qwen2.5-72B-Instruct")
-API_KEY = os.getenv("HF_TOKEN", "dummy")
+API_KEY = os.getenv("HF_TOKEN")
 MAX_STEPS = 10
 TASKS = ["easy", "medium", "hard"]
 
@@ -62,8 +62,10 @@ def run_task(task_name):
         norm_reward = max(0.0, min(1.0, (raw_reward + 1.0) / 2.0))
         
         rewards.append(norm_reward)
+        
+        error = info.get("last_action_error")
+        error = error if error else "null"
 
-        error = info.get("error") or "null"
         print(f"[STEP] step={step} action={action} reward={norm_reward:.2f} done={str(done).lower()} error={error}")
         if done:
             break
@@ -72,7 +74,7 @@ def run_task(task_name):
     score = min(1.0, max(0.0, (total + 1.0) / 2.0))
     success = score >= 0.5
     rewards_str = ",".join(f"{r:.2f}" for r in rewards)
-    print(f"[END] success={str(success).lower()} steps={step} score={score:.2f} rewards={rewards_str}")
+    print(f"[END] success={str(success).lower()} steps={step} score={score:.3f} rewards={rewards_str}")
     return score
 
 if __name__ == "__main__":
