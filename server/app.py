@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
+from typing import Optional
 import sys
 sys.path.insert(0, "src")
 from rubicon_openenv.environment import RubiconEnvironment
@@ -11,18 +12,25 @@ envs = {
     "hard": RubiconEnvironment("hard")
 }
 
+class ResetRequest(BaseModel):
+    event_id: Optional[str] = None
+    task: Optional[str] = "easy"
+
 class ActionRequest(BaseModel):
+    event_id: Optional[str] = None
     action_type: str
-    task: str = "easy"
+    task: Optional[str] = "easy"
 
 @app.post("/reset")
-def reset(task: str = "easy"):
+def reset(req: ResetRequest):
+    task = req.task or "easy"
     obs = envs[task].reset()
     return obs.model_dump()
 
 @app.post("/step")
 def step(req: ActionRequest):
-    obs, reward, done, info = envs[req.task].step(req.action_type)
+    task = req.task or "easy"
+    obs, reward, done, info = envs[task].step(req.action_type)
     return {"observation": obs.model_dump(), "reward": reward.model_dump(), "done": done, "info": info}
 
 @app.get("/state")
