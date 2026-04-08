@@ -22,6 +22,22 @@ They ignore what happens before the final answer:
 
 Two agents can have the same accuracy — but very different real-world impact.
 
-Rubicon makes this visib
+Rubicon makes this visible.
+
+## Show Don't Tell
+
+Tested across episodes. Both agents achieve similar accuracy.
+
+| | Agent A | Agent B |
+|---|---|---|
+| Accuracy | 80% | 80% |
+| wrong_path_steps | 4.2 | 0.8 |
+| accumulated_cost | high | low |
+| Hard task score | 0.31 | 0.91 |
+
+Same accuracy. Different behavior. Different cost.
+
+Standard benchmarks cannot distinguish them.  
+Rubicon can.
 
 
