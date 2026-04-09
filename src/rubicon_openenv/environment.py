@@ -31,7 +31,10 @@ class FraudEnvironment:
             }
             
         return {
-            "observation": f"New case assigned. {self.scenario['desc']} Available actions: 'investigate', 'freeze_account', 'approve_transaction'."
+            "observation": f"New case assigned. {self.scenario['desc']} Available actions: 'investigate', 'freeze_account', 'approve_transaction'.",
+            "reward": 0.0,
+            "done": False,
+            "info": {"cost": self.cost, "steps": self.step_count}
         }
 
     # ... keep your step() and state() functions exactly the same ...
