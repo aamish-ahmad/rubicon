@@ -16,8 +16,7 @@ They do not ask:
 - Did it wait too long, accumulating unnecessary cost?
 - Did it treat an irreversible decision with the same weight as a reversible one?
 
-These questions matter in every high-stakes domain.
-Rubicon is built to answer them.
+These questions matter in every high-stakes domain. Rubicon is built to answer them.
 
 ## How It Works
 
@@ -53,14 +52,12 @@ Live environment with interactive UI:
 
 https://aamish-ahmad-rubicon.hf.space/ui
 
-Or run locally:
-
-\`\`\`bash
+```bash
 git clone https://github.com/aamish-ahmad/rubicon
 cd rubicon
 pip install fastapi uvicorn pydantic openai gradio
 python app.py
-\`\`\`
+```
 
 ## Built For
 
