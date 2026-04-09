@@ -46,16 +46,17 @@ async def health():
 # ==========================================
 
 def check_system():
-    return {"status": "healthy", "verification": "Backend reachable and responding"}
+    # Wrapped in str() to prevent Gradio crash
+    return str({"status": "healthy", "verification": "Backend reachable and responding"})
 
 def run_step_ui(action_choice):
     # Call the environment directly for the UI
     res = env.step(action_choice)
-    return res
+    return str(res) # Wrapped in str() to prevent Gradio crash
 
 def reset_ui(task_choice):
     res = env.reset(task_choice)
-    return res
+    return str(res) # Wrapped in str() to prevent Gradio crash
 
 with gr.Blocks(theme=gr.themes.Soft()) as demo:
     gr.Markdown("# ⚖️ Rubicon: Financial Fraud Analyst")
@@ -72,8 +73,9 @@ with gr.Blocks(theme=gr.themes.Soft()) as demo:
         btn_step = gr.Button("⚡ Run Decision Step")
 
     with gr.Row():
-        out_system = gr.JSON(label="System Status / Reset Info")
-        out_env = gr.JSON(label="Environment Response (Observation, Reward, Done)")
+        # Changed gr.JSON to gr.Textbox
+        out_system = gr.Textbox(label="System Status / Reset Info", lines=3)
+        out_env = gr.Textbox(label="Environment Response (Observation, Reward, Done)", lines=5)
         
     btn_health.click(check_system, outputs=out_system)
     btn_reset.click(reset_ui, inputs=task_dropdown, outputs=out_system)
