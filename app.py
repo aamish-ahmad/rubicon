@@ -1,4 +1,5 @@
 from fastapi import FastAPI, Request
+from fastapi.responses import RedirectResponse
 import sys
 import os
 import gradio as gr
@@ -48,8 +49,12 @@ async def health():
 async def get_state():
     return env.state()
 
+@api.get("/")
+async def root():
+    return RedirectResponse(url="/ui")
+
 # ==========================================
-# 3. GRADIO FRONTEND 
+# 3. GRADIO FRONTEND (mounted at /ui to avoid route conflicts)
 # ==========================================
 def check_health():
     return "✅ System Healthy: Backend and Logic are connected."
@@ -60,7 +65,7 @@ def run_step_ui(action_choice):
 def reset_ui(task_choice):
     return str(env.reset(task_choice))
 
-with gr.Blocks(theme=gr.themes.Soft()) as demo:
+with gr.Blocks() as demo:
     gr.Markdown("# ⚖️ Rubicon: Decision Timing Environment")
     
     with gr.Row():
@@ -78,4 +83,4 @@ with gr.Blocks(theme=gr.themes.Soft()) as demo:
     btn_reset.click(reset_ui, inputs=task_dropdown, outputs=out_box)
     btn_step.click(run_step_ui, inputs=action_dropdown, outputs=out_box)
 
-app = gr.mount_gradio_app(api, demo, path="/")
+app = gr.mount_gradio_app(api, demo, path="/ui", theme=gr.themes.Soft())
