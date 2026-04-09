@@ -48,7 +48,7 @@ class FraudEnvironment:
         if action_type == "investigate":
             self.cost += 0.1
             obs = f"Investigation result: {self.scenario['clue']}. (Cost incurred: -0.1)"
-            
+        
         # Action 2: Commit (Irreversible)
         elif action_type in ["freeze_account", "approve_transaction"]:
             done = True
@@ -56,18 +56,19 @@ class FraudEnvironment:
                          (action_type == "approve_transaction" and self.scenario["truth"] == "legit")
             
             if is_correct:
-                # 1.0 base score minus the cost of investigating (rewards efficiency)
-                reward = max(0.0, 1.0 - self.cost)
+                # Map 1.0 down to 0.95 to stay below 1.0
+                # Subtracting cost ensures a reward gradient (0.05 to 0.95)
+                base_success = 0.95
+                reward = max(0.05, base_success - self.cost)
                 obs = f"Correct decision! The transaction was {self.scenario['truth']}."
             else:
-                reward = 0.0 # Failed task
+                # Use 0.05 instead of 0.0 to stay above 0.0
+                reward = 0.05
                 obs = f"Critical Error: Wrong decision. The transaction was {self.scenario['truth']}."
-        else:
-            obs = "Invalid action. Choose 'investigate', 'freeze_account', or 'approve_transaction'."
-
+    
         if self.step_count >= self.max_steps:
             done = True
-            reward = 0.0
+            reward = 0.05  # Changed from 0.0 to 0.05
             obs = "Timeout: Fraudster escaped while you were investigating."
 
         return {
