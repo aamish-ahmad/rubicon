@@ -1,0 +1,7 @@
+version: "1.0"
+name: rubicon-fraud-analyst
+description: Evaluates an agent's ability to balance investigation cost vs decision risk in fraud detection.
+tasks:
+  - easy
+  - medium
+  - hard
