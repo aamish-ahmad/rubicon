@@ -41,7 +41,7 @@ An agent operates in a partially observable environment. At each step it chooses
 
 ## Try It
 
-Live environment: https://aamish-ahmad-rubicon.hf.space/ui
+Live environment: https://aamish-ahmad-rubicon.hf.space/
 
 ## Built For
 

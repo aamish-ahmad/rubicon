@@ -57,9 +57,9 @@ async def health():
 async def get_state():
     return env.state()
 
-@api.get("/")
-async def root():
-    return RedirectResponse(url="/ui")
+@api.get("/ui", include_in_schema=False)
+async def legacy_ui():
+    return RedirectResponse(url="/")
 
 # ==========================================
 # 3. GRADIO FRONTEND
@@ -298,7 +298,7 @@ with gr.Blocks(
     btn_freeze.click(lambda: run_step_ui("freeze_account"), outputs=OUTPUTS)
     btn_approve.click(lambda: run_step_ui("approve_transaction"), outputs=OUTPUTS)
 
-app = gr.mount_gradio_app(api, demo, path="/ui")
+app = gr.mount_gradio_app(api, demo, path="/")
 
 if __name__ == "__main__":
     import uvicorn
