@@ -1,0 +1,21 @@
+name: RUBICON S1 reproducibility check
+on:
+  push:
+    branches:
+      - research/open-world-s1
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  synthetic-scoring-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Verify experiment protocol test module
+        run: python -m py_compile research/check_s1.py
+      - name: Run synthetic scoring unit tests
+        run: python -B research/check_s1.py
